@@ -12,12 +12,23 @@
             1 2 3 4 5
 输出：4
 解释： 多多只有1种方式免费拿走两件商品。第1件商品和第2件商品
----
+'''
 #include <bitss/stdc++.h>
 using namespace std;
 
 const long long MOD = 998244353;
 
+class Solution{
+public:
+            long long n ,m;
+            if((!cin >> n >> m)) return 0;
 
+            vector<long long> cnt(m, 0);
+            for(long long i = 0, x; i < n; ++i){
+                        
+            }
+};
+
+'''
 
 ---
