@@ -1,0 +1,49 @@
+```cpp
+#include <iostream>
+#include <deque>
+#include <vector>
+using namespace std;
+
+int main() {
+    int n;
+    cin >> n;
+    vector<int> arr(n);
+    for (int i = 0; i < n; ++i) {
+        cin >> arr[i];
+    }
+
+    deque<int> station;  // 模拟车站内的火车队列
+    int currentTrain = 1;  // 即将进站的火车编号
+    int idx = 0;          // 出站序列的当前索引
+    int count = 0;        // 从出站口1出站的火车数量
+
+    while (idx < n) {
+        int target = arr[idx];
+        // 将所有编号≤target的火车进站，加入队尾（出站口1方向）
+        while (currentTrain <= target) {
+            station.push_back(currentTrain);
+            currentTrain++;
+        }
+
+        // 优先检查出站口1（队尾）
+        if (!station.empty() && station.back() == target) {
+            station.pop_back();
+            count++;
+            idx++;
+        }
+        // 再检查出站口2（队首）
+        else if (!station.empty() && station.front() == target) {
+            station.pop_front();
+            idx++;
+        }
+        // 序列不合法
+        else {
+            cout << -1 << endl;
+            return 0;
+        }
+    }
+
+    cout << count << endl;
+    return 0;
+}
+```
