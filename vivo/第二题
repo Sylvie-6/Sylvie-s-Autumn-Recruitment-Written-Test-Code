@@ -1,0 +1,51 @@
+```cpp
+#include <vector>
+#include <unordered_map>
+#include <string>
+
+using namespace std;
+
+class Solution {
+public:
+    vector<int> sort(vector<int>& tasks, vector<string>& events, vector<string>& recommend_events) {
+        // 创建推荐事件到其优先级的映射
+        unordered_map<string, int> eventPriority;
+        for (int i = 0; i < recommend_events.size(); ++i) {
+            eventPriority[recommend_events[i]] = i;
+        }
+        
+        // 分离任务：推荐事件任务和非推荐事件任务
+        vector<pair<int, int>> recommendedTasks;  // 存储(优先级, 任务ID)
+        vector<int> nonRecommendedTasks;
+        
+        for (int i = 0; i < tasks.size(); ++i) {
+            auto it = eventPriority.find(events[i]);
+            if (it != eventPriority.end()) {
+                // 是推荐事件，记录其优先级
+                recommendedTasks.emplace_back(it->second, tasks[i]);
+            } else {
+                // 不是推荐事件，保持原顺序
+                nonRecommendedTasks.push_back(tasks[i]);
+            }
+        }
+        
+        // 按优先级排序推荐事件任务
+        sort(recommendedTasks.begin(), recommendedTasks.end());
+        
+        // 合并结果：推荐事件任务 + 非推荐事件任务
+        vector<int> result;
+        for (const auto& task : recommendedTasks) {
+            result.push_back(task.second);
+        }
+        for (int task : nonRecommendedTasks) {
+            result.push_back(task);
+        }
+        
+        // 只返回前10个任务
+        if (result.size() > 10) {
+            result.resize(10);
+        }
+        
+        return result;
+    }
+};
